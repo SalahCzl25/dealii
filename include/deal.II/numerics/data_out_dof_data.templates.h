@@ -923,7 +923,7 @@ namespace internal
       create_dof_vector(
         const DoFHandler<dim, spacedim>                 &dof_handler,
         const VectorType                                &src,
-        LinearAlgebra::distributed::BlockVector<Number> &dst,
+        LinearAlgebra::ReadWriteVector<Number &dst,
         const unsigned int level = numbers::invalid_unsigned_int)
       {
         const IndexSet &locally_owned_dofs =
@@ -939,8 +939,8 @@ namespace internal
         std::vector<types::global_dof_index> n_indices_per_block(
           src.n_blocks());
 
-        //for (unsigned int b = 0; b < src.n_blocks(); ++b)
-        //  n_indices_per_block[b] = src.get_block_indices().block_size(b);
+        for (unsigned int b = 0; b < src.n_blocks(); ++b)
+          n_indices_per_block[b] = src.get_block_indices().block_size(b);
 
         const auto locally_owned_dofs_b =
           locally_owned_dofs.split_by_block(n_indices_per_block);
@@ -949,6 +949,9 @@ namespace internal
 
         //dst.reinit(src.n_blocks());
         dst.reinit(locally_relevant_dofs);
+
+        LinearAlgebra::distributed::BlockVector<Number> temp_ghosted;
+        temp_ghosted.reinit(src.n_blocks());
 
         for (unsigned int b = 0; b < src.n_blocks(); ++b)
           {
