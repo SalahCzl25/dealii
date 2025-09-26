@@ -51,6 +51,10 @@
 #include <deal.II/numerics/data_out.h>
 #include <deal.II/numerics/data_out_dof_data.h>
 
+#ifdef DEAL_II_WITH_TRILINOS
+#include <deal.II/lac/trilinos_vector.h>
+#endif
+
 #include <algorithm>
 #include <memory>
 #include <string>
