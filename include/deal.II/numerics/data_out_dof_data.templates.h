@@ -923,7 +923,7 @@ namespace internal
       create_dof_vector(
         const DoFHandler<dim, spacedim>                 &dof_handler,
         const VectorType                                &src,
-        LinearAlgebra::ReadWriteVector<Number &dst,
+        LinearAlgebra::ReadWriteVector<Number    &dst,
         const unsigned int level = numbers::invalid_unsigned_int)
       {
         const IndexSet &locally_owned_dofs =
